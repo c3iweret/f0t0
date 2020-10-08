@@ -20,13 +20,13 @@ class TimeLine extends Component {
   }
 
   //if session expires, redirect user to sign in page
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
-    ) {
-      this.props.history.push("/");
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (
+  //     prevProps.reducer.isAuthenticated !== this.props.reducer.isAuthenticated
+  //   ) {
+  //     this.props.history.push("/");
+  //   }
+  // }
 
   handleSearch = (e) => {
     this.setState({
@@ -203,7 +203,7 @@ class TimeLine extends Component {
       <div>
         <nav className="navigation-bar-list">
           <div className="my-info">
-            <button className="navbar-link" onClick={this.restorePhotos}>
+            <button className="navbar-link" onClick={() => this.restorePhotos}>
               <img src={logo} alt="logo" className="logo" />
             </button>
             <button className="navbar-link" onClick={this.myImages}>

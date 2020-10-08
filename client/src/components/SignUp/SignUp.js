@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../SignUp/SignUp.css";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../store/actions";
 import PropTypes from "prop-types";
@@ -14,18 +14,20 @@ class SignUp extends Component {
       lastName: "",
       email: "",
       password: "",
+      allFields: "All fields are required for sign up!",
+      alreadyExists: "Account with that email already exists!",
     };
   }
 
   componentWillReceiveProps(nextProps) {
     //if user is successfully registered, redirect to timeline
-    if (nextProps.reducer.isAuthenticated) {
+    if (nextProps.isAuthenticated) {
       this.props.history.push("/timeline");
     }
   }
 
   componentDidMount() {
-    if (this.props.reducer.isAuthenticated) {
+    if (this.props.isAuthenticated) {
       this.props.history.push("/timeline");
     }
   }
@@ -51,12 +53,17 @@ class SignUp extends Component {
           <div className="auth-wrapper">
             <img className="logo-black" src={logo} alt="logo" />
             <div className="auth-inner">
-              {this.props.reducer.error && (
-                <p className="alreadyExists">
-                  {this.props.reducer.error + " "}
-                  <a href="/">sign in?</a>
-                </p>
-              )}
+              {this.props.error &&
+                this.props.error === this.state.alreadyExists && (
+                  <p className="alreadyExists">
+                    {this.props.error + " "}
+                    <a href="/">sign in?</a>
+                  </p>
+                )}
+              {this.props.error &&
+                this.props.error === this.state.allFields && (
+                  <p className="alreadyExists">{this.props.error}</p>
+                )}
               <form onSubmit={this.handleSubmit}>
                 <h3>Sign Up</h3>
 
@@ -107,14 +114,13 @@ class SignUp extends Component {
                 <button type="submit" className="btn btn-primary btn-block">
                   Sign Up
                 </button>
-                <Link className="nav-link" to={"/"}>
-                  <p className="forgot-password text-right">
-                    Already registered{" "}
-                    <a href="/" className="bottom-link">
-                      sign in?
-                    </a>
-                  </p>
-                </Link>
+
+                <p className="forgot-password text-right">
+                  Already registered{" "}
+                  <a href="/" className="bottom-link">
+                    sign in?
+                  </a>
+                </p>
               </form>
             </div>
           </div>
@@ -125,11 +131,13 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  reducer: state,
+  isAuthenticated: state.error,
+  error: state.error,
 });
 
 SignUp.propTypes = {
-  reducer: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
   registerUser: PropTypes.func.isRequired,
 };
 

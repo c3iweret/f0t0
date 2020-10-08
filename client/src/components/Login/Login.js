@@ -15,15 +15,16 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
-    //if user is authenticated, redirect to timeline page
-    if (this.props.isAuthenticated) {
-      this.props.history.push("/timeline");
-    }
-  }
+  // componentDidMount() {
+  //   //if user is authenticated, redirect to timeline page
+  //   if (this.props.isAuthenticated) {
+  //     this.props.history.push("/timeline");
+  //   }
+  // }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isAuthenticated) {
+    console.log("next props", nextProps);
+    if (nextProps.reducer.isAuthenticated) {
       this.props.history.push("/timeline");
     }
   }
@@ -115,6 +116,7 @@ class Login extends Component {
 const mapStateToProps = (state) => ({
   isAuthenticated: state.isAuthenticated,
   error: state.error,
+  reducer: state,
 });
 
 Login.propTypes = {

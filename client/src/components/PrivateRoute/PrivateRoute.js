@@ -7,18 +7,14 @@ const PrivateRoute = ({ component: Component, reducer, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      reducer.isAuthenticated === true ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/" />
-      )
+      props.isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
     }
   />
 );
 PrivateRoute.propTypes = {
-  reducer: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 const mapStateToProps = (state) => ({
-  reducer: state,
+  isAuthenticated: state.isAuthenticated,
 });
 export default connect(mapStateToProps)(PrivateRoute);
